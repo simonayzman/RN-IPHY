@@ -3,6 +3,7 @@ const colors = {
   DARK_GRAY: '#8A8B8C',
   LIGHT_GRAY: '#C2C0BF',
   CHARCOAL: '#36454F',
+  OFF_BLACK: '#111111',
 };
 
 const margins = {

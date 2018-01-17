@@ -17,7 +17,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.CHARCOAL,
+    backgroundColor: colors.OFF_BLACK,
     alignItems: 'center',
     justifyContent: 'center',
   },

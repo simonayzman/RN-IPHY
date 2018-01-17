@@ -40,14 +40,14 @@ export default class HomeFeed extends Component {
   }
 
   fetchTrendingGifs() {
-    GiphyClient.trending()
+    GiphyClient.trending({ limit: 50 })
       .then(response => this.onFetchGifsSuccess(response.data))
       .catch(error => this.onFetchGifsFailure(error));
   }
 
   fetchSpecialGifs() {
     const searchQuery = 'React Native';
-    GiphyClient.search(searchQuery)
+    GiphyClient.search({ q: searchQuery, limit: 50 })
       .then(response => this.onFetchGifsSuccess(response.data))
       .catch(error => this.onFetchGifsFailure(error));
   }
@@ -77,19 +77,26 @@ export default class HomeFeed extends Component {
 
   renderHeader() {
     const { showsTrendingData } = this.state;
-    let specialStyle = showsTrendingData ? styles.unselectedHeaderText : styles.selectedHeaderText;
-    let giphyStyle = showsTrendingData ? styles.selectedHeaderText : styles.unselectedHeaderText;
+    let logoSource;
+    let logoStyle;
+    if (showsTrendingData) {
+      logoSource = require('../images/giphy-logo.png');
+      logoStyle = styles.giphyLogo;
+    } else {
+      logoSource = require('../images/rn-logo.png');
+      logoStyle = styles.rnLogo;
+    }
     return (
       <TouchableOpacity
         style={styles.header}
         onPress={this.onPressHeader}
-        activeOpacity={0.8}
+        activeOpacity={0.7}
       >
-        <Text style={styles.headerText}>
-          <Text style={specialStyle}>RN</Text>
-          <Text>-</Text>
-          <Text style={giphyStyle}>IPHY</Text>
-        </Text>
+        <Image
+          source={logoSource}
+          style={logoStyle}
+          resizeMode={'contain'}
+        />
       </TouchableOpacity>
     );
   }
@@ -99,11 +106,9 @@ export default class HomeFeed extends Component {
   }
 
   renderFailureGif() {
-    const failureGifUrl = 'https://media3.giphy.com/media/9J7tdYltWyXIY/giphy.gif';
     return (
       <Image
-        source={{ uri: failureGifUrl }}
-        style={styles.failureGif}
+        source={require('../images/not-found.gif')}
         resizeMode={'contain'}
       />
     )
@@ -113,7 +118,7 @@ export default class HomeFeed extends Component {
     const { gifData } = this.state;
     return (
       <GifList
-        limit={10}
+        limit={30}
         data={gifData}
       />
     );
@@ -121,11 +126,14 @@ export default class HomeFeed extends Component {
 
   renderFooter() {
     return (
-      <Image
-        source={require('../images/powered_by_giphy.gif')}
-        style={styles.giphyAttribution}
-        resizeMode={'contain'}
-      />
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Powered by </Text>
+        <Image
+          source={require('../images/giphy-name-inverted.png')}
+          style={styles.giphyAttribution}
+          resizeMode={'contain'}
+        />
+      </View>
     );
   }
 
@@ -157,37 +165,36 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 10,
+    justifyContent: 'center',
+    borderBottomWidth: 10,
+    borderColor: colors.RED,
+    paddingBottom: 10,
     marginTop: margins.VERTICAL.STATUS_BAR,
     marginBottom: margins.VERTICAL.LARGE,
-    borderColor: colors.RED,
   },
-  headerText: {
-    color: colors.RED,
-    fontSize: 65,
+  rnLogo: {
+    width: 111, // 880 original
+    height: 100, // 792 original
+  },
+  giphyLogo: {
+    width: 83, // 152 original
+    height: 100, // 184 original
+  },
+  footer: {
+    marginTop: margins.VERTICAL.MEDIUM,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerText: {
+    color: 'white',
+    fontSize: 20,
     fontWeight: 'bold',
-    textShadowColor: 'black',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 2,
-      height: 2,
-    }
-  },
-  selectedHeaderText: {
-    color: colors.DARK_GRAY,
-  },
-  unselectedHeaderText: {
-    color: colors.RED,
-  },
-  failureGif: {
-    width: 400,
-    height: 500,
   },
   giphyAttribution: {
-    marginTop: margins.VERTICAL.LARGE,
-    height: 50,
-    width: 350,
-    alignSelf: 'center',
+    height: 38,
+    width: 100,
   },
 });
