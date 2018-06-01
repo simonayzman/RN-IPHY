@@ -1,4 +1,4 @@
-## RN-IPHY
+# RN-IPHY
 
 ![](./app-demo.gif)
 
