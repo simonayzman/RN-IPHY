@@ -51,7 +51,7 @@ $ git checkout stage6
 ### stage6 to stage7
 * Added data & limit props to GifList
 
-#### stage7 to stage8
+### stage7 to stage8
 * Added React Native gifs toggle to HomeFeed
 
 ### stage8 to stage9
